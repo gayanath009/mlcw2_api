@@ -1,11 +1,12 @@
 from flask import Flask, jsonify, request
+from flask import Response
 import pandas as pd
 
 
 #Initializing the application 
 app = Flask(__name__) 
 
-# /GetData?Frac=.1
+# /GetData Route
 @app.route('/GetData', methods=['GET'])
 def load_csv():
     global csv_data
@@ -16,11 +17,10 @@ def load_csv():
     else :
         csv_data = read_csv(csv_file,10)
         if "error" in csv_data:
-            return jsonify(csv_data), 400
-
-        # Convert the DataFrame to a JSON-serializable list of dicts
-        return jsonify(csv_data.to_dict(orient='records'))
-
+            return jsonify(csv_data), 400                 
+        json_str = csv_data.to_json(orient='records')        
+        response = Response(json_str, content_type='application/json') # Create a Flask response with the JSON data
+        return response  
 
 
 def read_csv(file_path, fraction):

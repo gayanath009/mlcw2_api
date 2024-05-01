@@ -2,15 +2,14 @@ from flask import Flask, jsonify, request
 from flask import Response
 import pandas as pd
 
-
 #Initializing the application 
 app = Flask(__name__) 
 
-# /GetData?Fraction='0.1' Route
+# Route Format  /GetData?Fraction='0.1'
 @app.route('/GetData', methods=['GET'])
 def load_csv():
     global csv_data
-    csv_file = "dataset/test20.csv"  
+    csv_file = "dataset/ECG5000_TEST.csv"  
     fraction_str = request.args.get('Fraction', default='1')
     fraction = float(fraction_str)
 
@@ -28,7 +27,7 @@ def load_csv():
 def read_csv(file_path, fraction):
     try:
         data = pd.read_csv(file_path)
-        data = data.sample(frac=fraction)
+        dataFrac = data.sample(frac=fraction)
         return data
     except Exception as e:
         return {"error": str(e)}

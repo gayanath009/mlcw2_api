@@ -28,7 +28,7 @@ def read_csv(file_path, fraction):
     try:
         data = pd.read_csv(file_path)
         dataFrac = data.sample(frac=fraction)
-        return data
+        return dataFrac
     except Exception as e:
         return {"error": str(e)}
 
